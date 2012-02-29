@@ -1,0 +1,44 @@
+<div class="clearfix" style="margin-bottom: 20px;">
+  <%= image_tag('manybots-gmail/icon.png', :align => :left, :width => 40, :style=> 'margin-right: 10px;') %>
+  <h2>Gmail Observer</h2>
+</div>
+
+<%- @gmails.each do |gmail| -%>
+  <div class="card">
+    <h4>
+      <%= gmail.remote_account_id %> 
+      <span class="meta">
+        <%= link_to 'Delete', gmail_path(gmail.id), :method => :delete, :confirm => 'Are you sure ?', :class => '' %>
+      </span>
+    </h4>
+
+    <%- if @schedules and @schedules.keys.include?("import_manybots_gmail_emails_#{gmail.id}") -%> 
+      <p>Importing label <strong><%= gmail.payload[:mailbox] %></strong> every 30 minutes</p>
+      <p><%= link_to 'Stop importing', import_gmail_path(gmail.id), :method => :post, :confirm => 'Sure ?' %> </p>
+    <%- else -%>
+    
+      <%= form_tag import_gmail_path(gmail.id), :method => :post, :class => 'clearfix' do %>    
+        <div id="select" style="margin: 10px 0;">
+          Loading your Gmail folders, please wait...
+        </div>
+
+        <p class="button save" style="float:left;margin: 0 5px 0 0;">
+          <%= submit_tag 'Start importing', :id => 'submit', :disabled => 'disabled'%> 
+        </p>
+        <span class="meta" style="line-height: 32px;">and refresh every 30 minutes.</span>
+      <%- end -%>
+    
+    
+      <script type="text/javascript" charset="utf-8">
+        $(function() {
+          $('#select').load('<%= list_folders_gmail_path(gmail.id) %>', function() {
+            $('#submit').removeAttr('disabled');
+          });
+          
+        });
+      </script>
+    <%- end -%>
+    <p></p>
+  </div>
+<%- end -%>
+<p><%= link_to 'Register a Gmail account', new_gmail_path %></p>

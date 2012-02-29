@@ -1,0 +1,5 @@
+  <p>
+    <%= label_tag 'mailbox', 'Select a label to import' %>
+    <br>
+    <%= select 'gmail', 'mailbox', @folders.collect{|f| [f, f] }, {:selected => '[Gmail]/All Mail'} %>
+  </p>
