@@ -2,7 +2,7 @@ class GmailWorker
   require 'gmail'
   @queue = :observers
   
-  def self.perform(gmail_account_id, date_range=:recent)
+  def self.perform(gmail_account_id, date_range='recent')
     
     current_app = ManybotsGmail.app  
     gmail_account = OauthAccount.find(gmail_account_id)
@@ -15,9 +15,10 @@ class GmailWorker
     user = User.find(user_id)
     
     if date_range == 'recent'
-      begin
-        the_date = ManybotsGmail::Email.where(:user_id => user_id, :address => address).latest.first.sent_at.to_date - 1.day
-      rescue
+      the_date = ManybotsGmail::Email.where(:user_id => user_id, :address => address).latest.first
+      if the_date
+        the_date = the_date.sent_at.to_date - 2.days
+      else
         the_date = Date.today - 5.days
       end
     else
@@ -25,7 +26,12 @@ class GmailWorker
     end
 
     gmail = GmailWorker.imap_client(gmail_account)
-    gmail.mailbox(mailbox).emails(:after => the_date).each do |email|
+    begin
+      emails = gmail.mailbox(mailbox).emails(:after => the_date)
+    rescue => e
+      raise "Error connecting to gmail Connection error:" + e.inspect
+    end
+    emails.each do |email|
       envelope = email.envelope
       unless ManybotsGmail::Email.exists?(:user_id => user_id, :muid => email.uid, :address => gmail_account.remote_account_id)
         mail = ManybotsGmail::Email.new
@@ -56,7 +62,7 @@ class GmailWorker
         mail.save
         mail.post_to_manybots!
       end
-    end
+    end if emails and emails.any?
   
     gmail.logout
   end
@@ -69,6 +75,7 @@ class GmailWorker
       :secret => gmail_account.secret
     )
   end
+  
   
 end
 

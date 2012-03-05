@@ -8,13 +8,13 @@
     <h4>
       <%= gmail.remote_account_id %> 
       <span class="meta">
-        <%= link_to 'Delete', gmail_path(gmail.id), :method => :delete, :confirm => 'Are you sure ?', :class => '' %>
+        <%= link_to 'Delete', gmail_path(gmail.id), :method => :delete, :confirm => 'Are you sure?', :class => '' %>
       </span>
     </h4>
 
     <%- if @schedules and @schedules.keys.include?("import_manybots_gmail_emails_#{gmail.id}") -%> 
       <p>Importing label <strong><%= gmail.payload[:mailbox] %></strong> every 30 minutes</p>
-      <p><%= link_to 'Stop importing', import_gmail_path(gmail.id), :method => :post, :confirm => 'Sure ?' %> </p>
+      <p><%= link_to 'Stop importing', import_gmail_path(gmail.id), :method => :post, :confirm => 'Sure?' %> </p>
     <%- else -%>
     
       <%= form_tag import_gmail_path(gmail.id), :method => :post, :class => 'clearfix' do %>    

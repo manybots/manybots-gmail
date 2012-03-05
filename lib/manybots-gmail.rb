@@ -6,7 +6,7 @@ module ManybotsGmail
   mattr_accessor :gmail_app_id
   @@gmail_app_id = 'anonymous'
 
-  # Gmail App Id for Imap/XOAuth. Defaults to anonymous
+  # Gmail App Secret for Imap/XOAuth. Defaults to anonymous
   mattr_accessor :gmail_app_secret
   @@gmail_app_secret = 'anonymous'
   

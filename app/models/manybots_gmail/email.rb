@@ -7,7 +7,7 @@ module ManybotsGmail
     scope :latest, lambda {
       order('manybots_gmail_emails.created_at DESC')
     }
-
+    
 
     def owner_is
       email = self.address
@@ -22,6 +22,10 @@ module ManybotsGmail
       else
         return "unlisted"
       end
+    end
+    
+    def decoded(field)
+      decode_str self.send(field)
     end
 
     def activity_sentence
@@ -52,7 +56,7 @@ module ManybotsGmail
           # PROPERTIES
           :id => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/activity",
           :url => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/activity",
-          :title => self.activity_sentence + ' - ' + self.subject.to_s,
+          :title => self.activity_sentence + ' - ' + decode_str(self.subject).to_s,
           :auto_title => true,
           :summary => nil,
           :content => nil,
@@ -77,8 +81,8 @@ module ManybotsGmail
           # VERB
           :verb => (self.owner_is == 'sender' ? 'send' : 'receive'),
           # TAGS
-          :tags => YAML.load(self.tags),
-          # ACTOR 
+          :tags => self.tags.present? ? YAML::load(self.tags.to_s) : [],
+          # ACTOR
           :actor => {
             :displayName => self.address,
             :id => "#{ManybotsServer.url}/users/#{self.user_id}",
@@ -88,37 +92,36 @@ module ManybotsGmail
           # OBJECT
           :object => {
             :displayName => "Email",
-            :id => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.user_id}",
-            :url => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.user_id}",
+            :id => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}",
+            :url => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}",
             :objectType => 'email'
           }
       }
 
       if self.activity_target.length <= 1
         activity[:target] = {
-            :displayName => self.activity_target.first[:name] || self.activity_target.first[:email],
+            :displayName => decode_str(self.activity_target.first[:name]) || self.activity_target.first[:email],
             :id => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape self.activity_target.first[:email]}",
             :url => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape self.activity_target.first[:email]}",
             :objectType => 'person',
             :email => self.activity_target.first[:email]
           } if self.activity_target.any?
       else
-        puts activity_target.inspect
-          activity[:target] = {
-            :displayName => "#{activity_target.length} people",
-            :id => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/people",
-            :url => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/people",
-            :objectType => 'group',
-            :attachments => activity_target.collect { |to| 
-              {
-                :displayName => to[:name] || to[:email], 
-                :objectType => 'person',
-                :email => to[:email],
-                :id => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape to[:email]}",
-                :url => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape to[:email]}"
-              } 
-            }
+        activity[:target] = {
+          :displayName => "#{activity_target.length} people",
+          :id => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/people",
+          :url => "#{ManybotsServer.url}/manybots-gmail/emails/#{self.id}/people",
+          :objectType => 'group',
+          :attachments => activity_target.collect { |to| 
+            {
+              :displayName => decode_str(to[:name]) || to[:email], 
+              :objectType => 'person',
+              :email => to[:email],
+              :id => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape to[:email]}",
+              :url => "#{ManybotsServer.url}/manybots-gmail/people/#{CGI.escape to[:email]}"
+            } 
           }
+        }
       end
       
       activity
@@ -138,6 +141,18 @@ module ManybotsGmail
     end
 
      protected 
+     
+     def decode_str(str)
+       if str.is_a?(String) and str.match 'ISO-8859-1'
+         begin
+           Mail::SubjectField.new(str).decoded 
+          rescue => e
+            puts e
+          end
+       else
+         str
+       end
+     end
 
      def truncate(text, length = 140, end_string = ' ...')
        words = text.split()

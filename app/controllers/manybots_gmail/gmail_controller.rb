@@ -39,7 +39,11 @@ module ManybotsGmail
           :args => [gmail.id, :recent],
           :description => "This job will import emails every 30 minutes for OauthAccount ##{gmail.id}"
         }
-        ManybotsServer.queue.enqueue(GmailWorker, gmail.id, :history)
+        if ManybotsGmail::Email.exists?(:user_id => current_user.id, :address => gmail.remote_account_id)
+          ManybotsServer.queue.enqueue(GmailWorker, gmail.id, :recent)
+        else
+          ManybotsServer.queue.enqueue(GmailWorker, gmail.id, :history)
+        end
       end
       gmail.save
       
