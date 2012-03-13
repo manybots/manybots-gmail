@@ -31,4 +31,4 @@ bundle exec rake db:migrate
 
 ### Restart and go!
 
-Restart your server and you'll see the Gmail Observer in your `/apps` catalogue. Go to the app, sign-in to your Gmail account and start importing your commits into Manybots.
+Restart your server and you'll see the Gmail Observer in your `/apps` catalogue. Go to the app, sign-in to your Gmail account and start importing your emails into Manybots.
