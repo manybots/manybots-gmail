@@ -16,8 +16,8 @@ You need the latest version of Manybots Local running on your system. Open your 
 First, require the gem: edit your `Gemfile`, add the following, and run `bundle install`
 
 ```
-gem 'manybots-gmail'
-gem 'gmail'
+gem 'manybots-gmail', :git => 'git://github.com/manybots/manybots-gmail.git'
+gem 'gmail', :git => 'git://github.com/webcracy/gmail.git'
 ```
 
 
