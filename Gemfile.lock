@@ -12,6 +12,7 @@ PATH
   specs:
     manybots-gmail (0.0.1)
       gmail
+      jquery-rails
       oauth
       rails (~> 3.2.1)
 
@@ -101,7 +102,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.31)
+    tzinfo (0.3.32)
 
 PLATFORMS
   ruby

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Add a Gmail Observer to your local Manybots."
   s.description = "Allows you to import your emails from Gmail into your local Manybots"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.1"
