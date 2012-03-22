@@ -1,7 +1,6 @@
 module ManybotsGmail
   class GmailController < ApplicationController
     before_filter :authenticate_user!
-    layout 'shared/application'
 
     def index
       @gmails = current_user.oauth_accounts.where(:client_application_id => current_app.id)
