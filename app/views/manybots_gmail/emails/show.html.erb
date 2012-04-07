@@ -1,0 +1,87 @@
+<style type="text/css" media="screen">
+  .avatar-frame {
+    float: left;
+    border: 2px solid #c7b89e;
+    margin-right: 3px;
+  }
+  .avatar-frame, .avatar-frame img {
+    width: 50px;
+    height: 50px;
+    -webkit-border-radius: 30px; /* Saf3+, Chrome */
+    border-radius: 30px; /* Opera 10.5, IE 9 */
+    /*-moz-border-radius: 30px; Disabled for FF1+ */
+  }
+  
+  .from {
+    border: 2px solid lightblue;
+  }
+  .to {
+    border: 2px solid green;
+  }
+  .cc img {
+    opacity: .5;
+  }
+  .bcc img {
+    opacity: .3;
+  }
+</style>
+
+<div class="clearfix meta" style="margin-left: 65px;margin-bottom: 5px;">
+  <%= l @email.sent_at %>
+</div>
+
+
+<div class="clearfix">
+  <div style="float:left;margin-right: 5px;">
+    <a href="mailto:<%= @email.from.first[:email] %>" title="From: <%= @email.from.first[:name] %>">
+      <div class="avatar-frame from">
+        <%= image_tag(gravatar_url_for(@email.from.first[:email]), width: 40, align: 'left', alt: "From: #{@email.from.first[:name]}" ) %> 
+      </div>
+    </a>
+  </div>
+
+  <h1 class="page-title">
+    <%= @email.subject %>
+  </h1>
+  
+</div>
+
+<div class="clearfix" style="margin: 5px 0 15px 60px;">
+  <%- @email.to.each do |t| -%>
+    <a href="mailto:<%= t[:email] %>" title="To: <%= t[:name] %>">
+      <div class="avatar-frame to">
+        <%= image_tag gravatar_url_for(t[:email]), alt: "To: #{t[:name]}" %>
+      </div>
+    </a>  
+  <%- end -%>
+  <%- if @email.cc.present? -%>
+    <%- @email.cc.each do |t| -%>
+      <a href="mailto:<%= t[:email] %>" title="Cc: <%= t[:name] %>">
+        <div class="avatar-frame cc">
+          <%= image_tag gravatar_url_for(t[:email]), alt: "Cc: #{t[:name]}" %>
+        </div>
+      </a>
+    <%- end -%>
+  <%- end -%>
+  <%- if @email.bcc.present? -%>
+    <%- @email.bcc.each do |t| -%>
+      <a href="mailto:<%= t[:email] %>" title="Bcc: <%= t[:name] %>">
+        <div class="avatar-frame bcc">
+          <%= image_tag gravatar_url_for(t[:email]), alt: "Bcc: #{t[:name]}" %>
+        </div>
+      </a>
+    <%- end -%>
+  <%- end -%>
+  
+</div>
+
+
+<div id="email-body" style="margin-left: 60px;">
+  <p style="margin: 0; font-size: 1.2em;">Loading email from Gmail...</p>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    $('#email-body').load('<%= from_gmail_email_path(@email) %>');
+  });
+</script>

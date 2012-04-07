@@ -139,6 +139,25 @@ module ManybotsGmail
         :accept => :json
       )
     end
+    
+    def body
+      gmail = GmailWorker.imap_client(gmail_account)
+      # used to initialize the connection
+      gmail.mailbox(gmail_account.payload[:mailbox])
+      begin
+        email = gmail.conn.uid_fetch(self.muid, "RFC822")[0].attr["RFC822"]
+      rescue => e
+        raise "Error connecting to gmail Connection error:" + e.inspect
+      end
+      message = email
+      gmail.logout
+      email = Mail.new(message)
+      email.text_part.decoded rescue(email.body.decoded)
+    end
+    
+    def gmail_account
+      @oauth_account ||= OauthAccount.find_by_user_id_and_remote_account_id(self.user_id, self.address)
+    end
 
      protected 
      
