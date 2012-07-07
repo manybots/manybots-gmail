@@ -10,7 +10,7 @@ GIT
 PATH
   remote: .
   specs:
-    manybots-gmail (0.0.1)
+    manybots-gmail (0.0.2)
       gmail
       jquery-rails
       oauth
@@ -66,6 +66,7 @@ GEM
     mime-types (1.17.2)
     multi_json (1.1.0)
     oauth (0.4.5)
+    ore-core (0.1.5)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.1)
@@ -111,4 +112,5 @@ DEPENDENCIES
   gmail!
   jquery-rails
   manybots-gmail!
+  ore-core
   sqlite3
