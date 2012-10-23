@@ -17,9 +17,9 @@ module ManybotsGmail
         Time.now.utc.strftime("%Y%m%d%H%M%S")
       end
       
-      desc 'Mounts Manybots Gmail at "/manybots-gmail"'
+      desc 'Mounts Manybots Gmail at "/manybots_gmail"'
       def add_manybots_gmail_routes
-        route 'mount ManybotsGmail::Engine => "/manybots-gmail"' if options.routes?
+        route 'mount ManybotsGmail::Engine => "/manybots_gmail"' if options.routes?
       end
       
       desc "Copies ManybotsGmail migrations"
@@ -29,7 +29,7 @@ module ManybotsGmail
       
       desc "Creates a ManybotsGmail initializer"
       def copy_initializer
-        template "manybots-gmail.rb", "config/initializers/manybots-gmail.rb"
+        template "manybots_gmail.rb", "config/initializers/manybots_gmail.rb"
       end
       
       def show_readme

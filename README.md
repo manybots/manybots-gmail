@@ -1,6 +1,6 @@
 # Gmail Observer
 
-manybots-gmail is a Manybots Observer that allows you to import your emails from your Gmail accounts, including Google Apps, into your local Manybots.
+manybots_gmail is a Manybots Observer that allows you to import your emails from your Gmail accounts, including Google Apps, into your local Manybots.
 
 On Manybots, your emails will look like this:
 john@manybots.com received an email from Super Fan - You guys are awesome.
@@ -16,12 +16,12 @@ You need the latest version of Manybots Local running on your system. Open your 
 First, require the gem: edit your `Botfile`, add the following, and run `bundle install`
 
 ```
-gem 'manybots-gmail', :git => 'git://github.com/manybots/manybots-gmail.git'
+gem 'manybots_gmail', :git => 'git://github.com/manybots/manybots_gmail.git'
 gem 'gmail', :git => 'git://github.com/webcracy/gmail.git'
 ```
 
 
-Second, run the manybots-gmail install generator (mind the underscore):
+Second, run the manybots_gmail install generator (mind the underscore):
 
 ```
 rails g manybots_gmail:install

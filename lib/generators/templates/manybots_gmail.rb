@@ -9,7 +9,7 @@ ManybotsGmail.setup do |config|
   # config.gmail_app_secret = 'anonymous'
   
   # App nickname
-  config.nickname = 'manybots-gmail'
+  config.nickname = 'manybots_gmail'
 end
 
 app = ClientApplication.find_or_initialize_by_nickname ManybotsGmail.nickname
@@ -17,8 +17,8 @@ if app.new_record?
   app.app_type = "Observer"
   app.name = "Gmail Observer"
   app.description = "Import your emails from Gmail"
-  app.url = ManybotsServer.url + '/manybots-gmail'
-  app.app_icon_url = "/assets/manybots-gmail/icon.png"
+  app.url = ManybotsServer.url + '/manybots_gmail'
+  app.app_icon_url = "/assets/manybots_gmail/icon.png"
   app.developer_name = "Manybots"
   app.developer_url = "https://www.manybots.com"
   app.category = "Productivity"

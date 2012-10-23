@@ -1,4 +1,4 @@
-require "manybots-gmail/engine"
+require "manybots_gmail/engine"
 
 module ManybotsGmail
   

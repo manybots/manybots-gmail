@@ -1,11 +1,11 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "manybots-gmail/version"
+require "manybots_gmail/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "manybots-gmail"
+  s.name        = "manybots_gmail"
   s.version     = ManybotsGmail::VERSION
   s.authors     = ["Alexandre L. Solleiro"]
   s.email       = ["alex@webcracy.org"]

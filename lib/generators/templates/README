@@ -5,7 +5,7 @@ Cool! Gmail Observer for Manybots has been installed.
 --
 A note about Gmail OAuth configuration options
 
-You can edit 'config/initializers/manybots-gmail.rb' to use your app id and 
+You can edit 'config/initializers/manybots_gmail.rb' to use your app id and 
 secret. 
 
 They're set to 'anonymous' by default, which should be fine.
@@ -14,9 +14,9 @@ They're set to 'anonymous' by default, which should be fine.
 Now what?
 
 - Run `bundle exec rake db:migrate` to get your db up to speed
-- Go to '/manybots-gmail' and start collecting your emails (you might have to relaunch the server)
+- Go to '/manybots_gmail' and start collecting your emails (you might have to relaunch the server)
 
 You can find help on the Manybots Dev mailing list.
-https://github.com/manybots/manybots-gmail
+https://github.com/manybots/manybots_gmail
 
 ==============
