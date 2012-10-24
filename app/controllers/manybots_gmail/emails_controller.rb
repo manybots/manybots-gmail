@@ -1,5 +1,5 @@
 module ManybotsGmail
-  class EmailsController < ApplicationController
+  class EmailsController < ::ApplicationController
     before_filter :authenticate_user!
     
     def show

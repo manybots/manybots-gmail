@@ -1,5 +1,5 @@
 module ManybotsGmail
-  class GmailController < ApplicationController
+  class GmailController < ::ApplicationController
     before_filter :authenticate_user!
 
     def index
