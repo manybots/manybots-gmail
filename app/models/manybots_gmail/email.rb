@@ -54,7 +54,7 @@ module ManybotsGmail
     def as_activity
       activity = {
           # PROPERTIES
-          :id => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}/activity",
+          :id => "tag:#{ManybotsServer.host}/manybots_gmail,#{ManybotsServer.uri_date}:users/#{self.user_id}/emails/#{self.id}/activity",
           :url => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}/activity",
           :title => self.activity_sentence + ' - ' + decode_str(self.subject).to_s,
           :auto_title => true,
@@ -62,13 +62,13 @@ module ManybotsGmail
           :content => nil,
           :published => self.sent_at.xmlschema,
           :icon => {
-            :url => 'http://mail.google.com/mail/images/2/mail_icon_32.png'
+            :url => "#{ManybotsServer.url}/assets/manybots_gmail/gmail_icon_32.png"
           },
           :provider => {
             :displayName => 'Gmail',
             :url => 'http://mail.google.com',
             :image => {
-              :url => 'http://mail.google.com/mail/images/2/mail_icon_32.png'
+              :url => "#{ManybotsServer.url}/assets/manybots_gmail/gmail_icon_32.png"
             }
           },
           :generator => {
@@ -85,14 +85,14 @@ module ManybotsGmail
           # ACTOR
           :actor => {
             :displayName => self.address,
-            :id => "#{ManybotsServer.url}/users/#{self.user_id}",
+            :id => "tag:#{ManybotsServer.host},#{ManybotsServer.uri_date}:users/#{self.user_id}",
             :url => "#{ManybotsServer.url}/users/#{self.user_id}",
             :email => self.address
           },
           # OBJECT
           :object => {
             :displayName => "Email",
-            :id => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}",
+            :id => "tag:#{ManybotsServer.host}/manybots_gmail,#{ManybotsServer.uri_date}:users/#{self.user_id}/emails/#{self.id}",
             :url => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}",
             :objectType => 'email'
           }
@@ -101,15 +101,15 @@ module ManybotsGmail
       if self.activity_target.length <= 1
         activity[:target] = {
             :displayName => decode_str(self.activity_target.first[:name]) || self.activity_target.first[:email],
-            :id => "#{ManybotsServer.url}/manybots_gmail/people/#{CGI.escape self.activity_target.first[:email]}",
-            :url => "#{ManybotsServer.url}/manybots_gmail/people/#{CGI.escape self.activity_target.first[:email]}",
+            :id => "tag:#{ManybotsServer.host}/manybots_gmail,#{ManybotsServer.uri_date}:users/#{self.user_id}/people/#{Digest::MD5.hexdigest self.activity_target.first[:email]}",
+            :url => "#{ManybotsServer.url}/manybots_gmail/people/#{Digest::MD5.hexdigest self.activity_target.first[:email]}",
             :objectType => 'person',
             :email => self.activity_target.first[:email]
           } if self.activity_target.any?
       else
         activity[:target] = {
           :displayName => "#{activity_target.length} people",
-          :id => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}/people",
+          :id => "tag:#{ManybotsServer.host}/manybots_gmail,#{ManybotsServer.uri_date}:users/#{self.user_id}/emails/#{self.id}/people",
           :url => "#{ManybotsServer.url}/manybots_gmail/emails/#{self.id}/people",
           :objectType => 'group',
           :attachments => activity_target.collect { |to| 
@@ -117,8 +117,8 @@ module ManybotsGmail
               :displayName => decode_str(to[:name]) || to[:email], 
               :objectType => 'person',
               :email => to[:email],
-              :id => "#{ManybotsServer.url}/manybots_gmail/people/#{CGI.escape to[:email]}",
-              :url => "#{ManybotsServer.url}/manybots_gmail/people/#{CGI.escape to[:email]}"
+              :id => "tag:#{ManybotsServer.host}/manybots_gmail,#{ManybotsServer.uri_date}:users/#{self.user_id}/people/#{Digest::MD5.hexdigest to[:email]}",
+              :url => "#{ManybotsServer.url}/manybots_gmail/people/#{Digest::MD5.hexdigest to[:email]}"
             } 
           }
         }
