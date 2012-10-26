@@ -1,4 +1,5 @@
 class GmailToManybotsWorker
+  extend Resque::Plugins::JobStats
   @queue = :importers
   
   def self.perform(email_id)
