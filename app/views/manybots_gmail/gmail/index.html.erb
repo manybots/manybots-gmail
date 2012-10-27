@@ -18,25 +18,16 @@
     <%- else -%>
     
       <%= form_tag import_gmail_path(gmail.id), :method => :post, :class => 'clearfix' do %>    
-        <div id="select" style="margin: 10px 0;">
+        <div class="select" data-load_url="<%= list_folders_gmail_path(gmail.id) %>" style="margin: 10px 0;">
           Loading your Gmail folders, please wait...
         </div>
 
         <p class="button save" style="float:left;margin: 0 5px 0 0;">
-          <%= submit_tag 'Start importing', :id => 'submit', :disabled => 'disabled'%> 
+          <%= submit_tag 'Start importing', :class => 'submit', :disabled => 'disabled' %> 
         </p>
         <span class="meta" style="line-height: 32px;">and refresh every 30 minutes.</span>
       <%- end -%>
     
-    
-      <script type="text/javascript" charset="utf-8">
-        $(function() {
-          $('#select').load('<%= list_folders_gmail_path(gmail.id) %>', function() {
-            $('#submit').removeAttr('disabled');
-          });
-          
-        });
-      </script>
     <%- end -%>
     <p></p>
   </div>

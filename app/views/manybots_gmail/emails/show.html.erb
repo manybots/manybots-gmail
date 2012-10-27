@@ -1,33 +1,7 @@
-<style type="text/css" media="screen">
-  .avatar-frame {
-    float: left;
-    border: 2px solid #c7b89e;
-    margin-right: 3px;
-  }
-  .avatar-frame, .avatar-frame img {
-    width: 50px;
-    height: 50px;
-    -webkit-border-radius: 30px; /* Saf3+, Chrome */
-    border-radius: 30px; /* Opera 10.5, IE 9 */
-    /*-moz-border-radius: 30px; Disabled for FF1+ */
-  }
-  
-  .from {
-    border: 2px solid lightblue;
-  }
-  .to {
-    border: 2px solid green;
-  }
-  .cc img {
-    opacity: .5;
-  }
-  .bcc img {
-    opacity: .3;
-  }
-</style>
+
 
 <div class="clearfix meta" style="margin-left: 65px;margin-bottom: 5px;">
-  <%= l @email.sent_at %>
+  <%= @email.sent_at %>
 </div>
 
 
@@ -75,13 +49,6 @@
   
 </div>
 
-
-<div id="email-body" style="margin-left: 60px;">
+<div class="email-body" data-load_url="<%= from_gmail_email_path(@email) %>" style="margin-left: 60px;">
   <p style="margin: 0; font-size: 1.2em;">Loading email from Gmail...</p>
 </div>
-
-<script type="text/javascript" charset="utf-8">
-  $(function() {
-    $('#email-body').load('<%= from_gmail_email_path(@email) %>');
-  });
-</script>
